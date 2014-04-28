@@ -8,3 +8,7 @@ main = _G.main
 _G.main = nil
 
 main.init()
+
+if lrg.getConfigOptions().checkForUpdatesOnStartup then
+	shell.run(".lrg/update")
+end
