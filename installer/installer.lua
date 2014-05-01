@@ -77,7 +77,7 @@ for k,v in pairs(fti) do
 		end
 	end
 	print("> Installing file \""..v.."\"...")
-	local status, message = pcall(installGithubFile(v,k))
+	local status, message = pcall(installGithubFile, v, k)
 	if status then
 		print("> File \""..v.."\" installed successfully.")
 	else
