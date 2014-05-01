@@ -1,0 +1,12 @@
+
+hand = http.get("https://raw.githubusercontent.com/lrg10002/turtlesync/master/installer/installer.lua")
+conts = hand.readAll()
+hand.close()
+
+hand = fs.open("installer","w")
+hand.write(conts)
+hand.close()
+
+shell.run("installer")
+fs.delete("installer")
+fs.delete(shell.getRunningProgram())
