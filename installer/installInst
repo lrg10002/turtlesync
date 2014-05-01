@@ -1,8 +1,8 @@
 {
 	["files"]= {
-		".lrg/main"="lrglib/main.lua",
-		"startup"="lrglib/startup.lua",
-		".lrg/update"="lrglib/update.lua",
-		".lrg/config"="lrglib/config.txt"
+		[".lrg/main"]="lrglib/main.lua",
+		["startup"]="lrglib/startup.lua",
+		[".lrg/update"]="lrglib/update.lua",
+		[".lrg/config"]="lrglib/config.txt"
 	}
 }
