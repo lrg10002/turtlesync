@@ -30,19 +30,29 @@ rednet.open(modemSide)
 
 buildId = args[1]
 
-rednet.host("lrg_builder_"..buildId, "lrg_builder_hostname_"..tostring(os.getComputerID()))
+protocol = "lrg_builder_"..buildId
+
+rednet.host(protocol, "lrg_builder_hostname_"..tostring(os.getComputerID()))
 
 toBuild = {}
+serverId = 0
+build = true
 
 function build()
 	for h=1,#toBuild do
 		row = toBuild[h]
 		for i=1,#row do
+			checkBuild()
 			b = row:sub(i,i)
 			if b == 0 then 
 				turtle.tryForward()
 			else
 				turtle.select(tonumber(b))
+				if turtle.getItemCount(turtle.getSelectedSlot()) < 1 then
+					build = false
+					rednet.send(serverId, "@EMPTYSLOT", protocol)
+					checkBuild()
+				end
 				turtle.placeDown()
 				if b ~= #row then turtle.tryForward() end
 			end
@@ -51,3 +61,40 @@ function build()
 		turtle.turnAround()
 	end
 end
+
+function gatherInfo()
+	while true do
+		id, mess = rednet.receive(protocol)
+		if mess=="@STARTINST" then
+			serverId = id
+			while true do
+				id, mess = rednet.receive(protocol)
+				if mess=="@ENDINST" then break end
+				table.insert(toBuild, mess)
+			end
+			break
+		end
+	end
+end
+
+function checkBuild()
+	while not build do
+		sleep(1)
+	end
+end
+
+gatherInfo()
+
+function gatherMessages()
+	while true do
+		id, mess = rednet.receive(protocol)
+		if mess=="@STOPBUILD" then build = false end
+		if mess=="@STARTBUILD" then build = true end
+	end
+end
+
+parallel.waitForAny(gatherMessages, build)
+
+
+
+
