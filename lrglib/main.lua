@@ -1,5 +1,34 @@
 --VERSION:0.1
 
+local function installTurtleLibraries()
+
+	_G["turtle"].tryForward = function()
+		while not turtle.forward() do
+			turtle.attack()
+			turtle.attack()
+			turtle.attack()
+			sleep(1)
+		end
+	end
+
+	_G["turtle"].tryUp = function()
+		while not turtle.up() do
+			turtle.attackUp()
+			turtle.attackUp()
+			turtle.attackUp()
+			sleep(1)
+		end
+	end
+
+	_G["turtle"].turnAround = function(dir)
+		if not dir then dir = "Left" end
+		if dir ~= "Left" and ~= "Right" then dir = "Left" end
+
+		turtle["turn"..dir]()
+		turtle["turn"..dir]()
+	end
+end
+
 local function installLibraries()
 	lrg = {}
 	lrg.split = function(str, sep)
@@ -50,4 +79,7 @@ end
 
 function init()
 	installLibraries()
+	if _G["turtle"] ~= nil then
+		installTurtleLibraries()
+	end
 end
