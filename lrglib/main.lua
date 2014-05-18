@@ -39,6 +39,8 @@ local function installLibraries()
 		hand.close()
 		return textutils.unserialize(conts)
 	end
+
+	_G["lrg"] = lrg
 end
 
 
