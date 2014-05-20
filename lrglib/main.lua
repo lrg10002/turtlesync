@@ -1,4 +1,4 @@
---VERSION:0.1
+--VERSION:0.3.1
 
 local function installTurtleLibraries()
 
@@ -22,7 +22,7 @@ local function installTurtleLibraries()
 
 	_G["turtle"].turnAround = function(dir)
 		if not dir then dir = "Left" end
-		if dir ~= "Left" and ~= "Right" then dir = "Left" end
+		if dir ~= "Left" and dir ~= "Right" then dir = "Left" end
 
 		turtle["turn"..dir]()
 		turtle["turn"..dir]()
