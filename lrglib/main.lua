@@ -1,4 +1,4 @@
---VERSION:0.3.1
+--VERSION:0.3.2
 
 local function installTurtleLibraries()
 
@@ -32,7 +32,8 @@ end
 local function installLibraries()
 	lrg = {}
 	lrg.split = function(str, sep)
-		local sep, fields = ":", {}
+		local fields = {}
+		if not sep then sep = ":" end
     	local pattern = string.format("([^%s]+)", sep)
    	 	str:gsub(pattern, function(c) fields[#fields+1] = c end)
     	return fields
