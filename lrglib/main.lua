@@ -44,8 +44,8 @@ local function installLibraries()
 		hand = fs.open(fp, "r")
 		while true do
 			line = hand.readLine()
-			if not line.match("\\-\\-.*") then break end
-			tags = line.match("\\-\\-(.*)")
+			if not line:match("\\-\\-.*") then break end
+			tags = line:match("\\-\\-(.*)")
 			for _,v in ipairs(lrg.split(tags, "|")) do
 				local kv = lrg.split(v)
 				ft[kv[1]] = kv[2]
