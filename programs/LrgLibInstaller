@@ -1,11 +1,19 @@
-hand = http.get("https://raw.githubusercontent.com/lrg10002/turtlesync/master/installer/installer.lua")
-conts = hand.readAll()
-hand.close()
+function getInstallPath()
+	return "_installer_DELETE_THIS_FILE"
+end
 
-hand = fs.open("installer","w")
-hand.write(conts)
-hand.close()
+function install()
 
-shell.run("_installer_DELETE_THIS_FILE")
-fs.delete("_installer_DELETE_THIS_FILE")
-fs.delete(shell.getRunningProgram())
+	hand = http.get("https://raw.githubusercontent.com/lrg10002/turtlesync/master/installer/installer.lua")
+	conts = hand.readAll()
+	hand.close()
+
+	hand = fs.open("_installer_DELETE_THIS_FILE","w")
+	hand.write(conts)
+	hand.close()
+
+	shell.run("_installer_DELETE_THIS_FILE")
+	fs.delete("_installer_DELETE_THIS_FILE")
+	fs.delete(shell.getRunningProgram())
+
+end
