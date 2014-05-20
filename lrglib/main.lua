@@ -56,7 +56,7 @@ local function installLibraries()
 	end
 
 	lrg.getVersion = function()
-		return lrg.getFileTags(shell.getRunningProgram())["VERSION"];
+		return lrg.getFileTags(".lrg/main")["VERSION"];
 	end
 
 	lrg.getGithubUrl = function(path)
