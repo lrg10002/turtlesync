@@ -45,6 +45,7 @@ local function installLibraries()
 		hand = fs.open(fp, "r")
 		while true do
 			line = hand.readLine()
+			print("line " .. line)
 			if not line.match(line, "\\-\\-.*") then break end
 			tags = line.match(line, "\\-\\-(.*)")
 			for _,v in ipairs(lrg.split(tags, "|")) do
