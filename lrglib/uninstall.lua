@@ -1,0 +1,5 @@
+print("Uninstalling LrgLib...")
+fs.delete(".lrg")
+fs.delete("startup")
+print("LrgLib uninstalled. Computer must restart for changes to update...")
+os.reboot()
