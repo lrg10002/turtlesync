@@ -71,6 +71,8 @@ local function installLibraries()
 	end
 
 	_G["lrg"] = lrg
+
+	os.loadAPI(".lrg/libraries/Queue")
 end
 
 
