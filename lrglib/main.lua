@@ -40,6 +40,7 @@ local function installLibraries()
 	end
 
 	lrg.getFileTags = function(fp)
+		print("tagsfor "..fp)
 		local ft = {}
 		hand = fs.open(fp, "r")
 		while true do
