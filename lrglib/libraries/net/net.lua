@@ -100,7 +100,7 @@ end
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ]]
 
---connect(): called by the user to connect to a hostname
+--connect(STRING host): called by the user to connect to a hostname
 function connect(host)
 	ms = getModem()
 	if not ms then error("[LrgLib] lrg.net: No modem found when attempting to connect!") end
@@ -109,4 +109,19 @@ function connect(host)
 	if nid == nil then return nil end
 
 	return buildConnectionTable(nid)
+end
+
+
+local hostname = nil
+
+--register(STRING host): registers a hostname-lookup for the current computer with the specified hostname
+function register(host)
+	if hostname then rednet.unhost("lrg_host_lookup", hostname) end
+	hostname = host
+	rednet.host("lrg_host_lookup", host)
+end
+
+--unRegister(): unregisters the current computer from the current hostname
+function unRegister()
+	rednet.unhost("lrg_host_lookup", hostname)
 end

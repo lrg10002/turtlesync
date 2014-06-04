@@ -1,1 +1,1 @@
-{["files"]= {[".lrg/main"]="lrglib/main.lua",["startup"]="lrglib/startup.lua",[".lrg/update"]="lrglib/update.lua",[".lrg/config"]="lrglib/config.txt", [".lrg/libraries/Queue"]="lrglib/libraries/queue.lua", [".lrg/uninstall"]="lrglib/uninstall.lua"}}
+{["files"]= {[".lrg/main"]="lrglib/main.lua",["startup"]="lrglib/startup.lua",[".lrg/update"]="lrglib/update.lua",[".lrg/config"]="lrglib/config.txt", [".lrg/libraries/Queue"]="lrglib/libraries/queue.lua", [".lrg/uninstall"]="lrglib/uninstall.lua", [".lrg/libraries/net"]="lrglib/libraries/net/net.lua"}}

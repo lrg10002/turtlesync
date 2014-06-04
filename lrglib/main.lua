@@ -1,4 +1,4 @@
---VERSION:0.3.3
+--VERSION:0.3.4
 
 local function installTurtleLibraries()
 
@@ -71,6 +71,10 @@ local function installLibraries()
 		hand.close()
 		return textutils.unserialize(conts)
 	end
+
+	os.loadAPI(".lrg/libraries/net")
+	lrg.net = _G["net"]
+	_G["net"] = nil
 
 	_G["lrg"] = lrg
 
