@@ -36,6 +36,12 @@ function create()
 		return ret
 	end
 
+	function queue.poll()
+		if amount==0 then return nil end
+
+		return values[1]
+	end
+
 	function queue.length()
 		return amount
 	end

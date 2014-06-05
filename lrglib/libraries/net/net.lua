@@ -12,27 +12,26 @@ easy-to-learn functions.
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ]]
 
---TABLE updateFunctions: a table which holds lists of all the update functions of all of the current connections
-local updateFunctions = {}
 
---event(TABLE res): called by the overwritten pullEventRaw Method when a message is received
-local function event(res)
-	tof = updateFunctions[res[2]]
-	if not tof then return end
-	for _,v in pairs(tof) do
-		v(res[2], res[3], res[4])
-	end
-end
+
+--FUNCTION serverUpdateFunctions: the update function for the current server
+local serverUpdateFunction = nil
+
+--API client: the loaded client api
+local client = nil
+
+--API server: the loaded server api
+local server = nil
 
 --load(): Called by the LrgLib main file when loading the library.
 function load()
-	if type(os._lrg_pullEventRaw) == "function" then return end
-	os._lrg_pullEventRaw = os.pullEventRaw
-	os.pullEventRaw = function(filter)
-		res = {os._lrg_pullEventRaw(filter)}
-		if res[1]=="rednet_message" then event(res) end
-		return unpack(res)
-	end
+	os.loadAPI(".lrg/libraries/netclient")
+	client = _G["netclient"]
+	_G["netclient"] = nil
+
+	os.loadAPI(".lrg/libraries/netserver")
+	server = _G["netserver"]
+	_G["netserver"] = nil
 end
 
 --getModem(): returns the side of a modem (and opens if necessary)
@@ -48,51 +47,15 @@ local function getModem()
 	return nil
 end
 
---buildConnectionTable(NUMBER nid): builds and returns an "object" for dealing with a specific connection
-local function buildConnectionTable(nid)
-	ct = {}
-
-	local id = nid
-	local mqueue = Queue.create()
-
-	local function update(sid, mess, prot)
-		mqueue.push({["id"]=sid, ["protocol"]=prot, ["message"]=sid})
+--checkRednet(): checks the rednet connection
+local function checkRednet()
+	ms = getModem()
+	if ms == nil then error("[LrgLib] lrg.net: No modem found when attempting to connect!") end
+	if not rednet.isOpen(ms) then
+		rednet.open(ms)
 	end
-
-
-	if updateFunctions[id] == nil then 
-		updateFunctions[id] = {}
-		updateFunctions[id].nUID = 0
-	end
-
-	local nUID = updateFunctions[id].nUID
-	updateFunctions[id][updateFunctions[id].nUID] = update
-	updateFunctions[id].nUID = nUID + 1
-
-
-	function ct.close()
-		updateFunctions[id][nUID] = nil
-	end
-
-
-	function ct.send(message, protocol)
-		if not protocol then 
-			rednet.send(id, message) 
-		else
-			rednet.send(id, message, protocol)
-		end		
-	end
-
-	function ct.read()
-		return mqueue.pop()
-	end
-
-	function ct.available()
-		return mqueue.length() > 0
-	end
-
-	return ct
 end
+
 
 --[[
  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,28 +63,20 @@ end
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ]]
 
+
 --connect(STRING host): called by the user to connect to a hostname
 function connect(host)
-	ms = getModem()
-	if not ms then error("[LrgLib] lrg.net: No modem found when attempting to connect!") end
+	checkRednet()
 
 	nid = rednet.lookup("lrg_host_lookup", host)
 	if nid == nil then return nil end
 
-	return buildConnectionTable(nid)
+	return client.buildConnectionTable(nid)
 end
 
 
-local hostname = nil
-
---register(STRING host): registers a hostname-lookup for the current computer with the specified hostname
-function register(host)
-	if hostname then rednet.unhost("lrg_host_lookup", hostname) end
-	hostname = host
-	rednet.host("lrg_host_lookup", host)
-end
-
---unRegister(): unregisters the current computer from the current hostname
-function unRegister()
-	rednet.unhost("lrg_host_lookup", hostname)
+--startServer(STRING host): registers a hostname-lookup for the current computer with the specified hostname, and returns a server-side listener
+function startServer(host)
+	checkRednet()
+	return server.buildServerTable(host)
 end
