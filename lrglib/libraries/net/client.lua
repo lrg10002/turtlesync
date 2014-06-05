@@ -4,7 +4,7 @@
 
 
 --buildConnectionTable(NUMBER nid): builds and returns an "object" for dealing with a specific connection (client)
-local function buildConnectionTable(nid)
+function buildConnectionTable(nid)
 	ct = {}
 
 	local id = nid
