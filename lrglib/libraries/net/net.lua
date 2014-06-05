@@ -78,5 +78,6 @@ end
 --startServer(STRING host): registers a hostname-lookup for the current computer with the specified hostname, and returns a server-side listener
 function startServer(host)
 	checkRednet()
+	rednet.host("lrg_host_lookup", host)
 	return server.buildServerTable(host)
 end
